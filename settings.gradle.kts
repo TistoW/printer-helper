@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "zenenta-printer"
 include(":app")
 include(":myhelper")
+include(":printer")

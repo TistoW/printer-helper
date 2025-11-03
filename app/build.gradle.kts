@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation(project(":myhelper"))
+    implementation(project(":printer"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlinKapt)
 }
 
 android {
@@ -39,6 +40,7 @@ android {
     sourceSets {
         getByName("main") {
             jniLibs.srcDirs("src/main/jniLibs")
+            aidl.srcDirs("src/main/aidl")
         }
     }
 
@@ -61,4 +63,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //Glide
+    implementation(libs.glide)
+    kapt(libs.compiler)
+
+    //noinspection UseTomlInstead
+    implementation("net.java.dev.jna:jna:5.18.1@aar")
+
+    implementation(libs.zxing.android.embedded)
+    implementation(libs.qrgenerator)
+    implementation(libs.timber)
 }

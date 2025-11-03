@@ -1,0 +1,1640 @@
+
+package com.caysn.printerlibs.printerlibs_caysnlabel;
+
+import android.graphics.Bitmap;
+
+import java.io.ByteArrayOutputStream;
+
+import com.sun.jna.Callback;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+import com.sun.jna.Platform;
+import com.sun.jna.Pointer;
+import com.sun.jna.WString;
+import com.sun.jna.ptr.*;
+
+public interface printerlibs_caysnlabel extends Library {
+
+    // static interface method need jdk1.8. here we use inner class to avoid this porblem.
+    public class GetLibraryPath_Helper {
+        // can replaced by absolute path
+        public static String GetLibraryPath() {
+            // force call JNI_OnLoad
+            if (Platform.isAndroid())
+                System.loadLibrary("PrinterLibs");
+            return "PrinterLibs";
+        }
+    }
+    public static final printerlibs_caysnlabel INSTANCE = (printerlibs_caysnlabel) Native.loadLibrary(GetLibraryPath_Helper.GetLibraryPath(), printerlibs_caysnlabel.class);
+
+
+    public static final int ComDataBits_4 = 4;
+    public static final int ComDataBits_5 = 5;
+    public static final int ComDataBits_6 = 6;
+    public static final int ComDataBits_7 = 7;
+    public static final int ComDataBits_8 = 8;
+
+
+    public static final int ComParity_NoParity = 0;
+    public static final int ComParity_OddParity = 1;
+    public static final int ComParity_EvenParity = 2;
+    public static final int ComParity_MarkParity = 3;
+    public static final int ComParity_SpaceParity = 4;
+
+
+    public static final int ComStopBits_One = 0;
+    public static final int ComStopBits_OnePointFive = 1;
+    public static final int ComStopBits_Two = 2;
+
+
+    public static final int ComFlowControl_None = 0;
+    public static final int ComFlowControl_XonXoff = 1;
+    public static final int ComFlowControl_RtsCts = 2;
+    public static final int ComFlowControl_DtrDsr = 3;
+
+
+    public static final int PL_QUERYBUFFER_EMTPY = 0;
+    public static final int PL_QUERYBUFFER_FAILED_PORT_CLOSED = -1;
+    public static final int PL_QUERYBUFFER_FAILED_PORT_WRITEFAILED = -2;
+    public static final int PL_QUERYBUFFER_FAILED_PORT_READFAILED = -3;
+    public static final int PL_QUERYBUFFER_NOT_EMPTY = -4;
+
+
+    public static final int PL_PRINTRESULT_SUCCESS = 0;
+    public static final int PL_PRINTRESULT_PORT_CLOSED = -1;
+    public static final int PL_PRINTRESULT_PORT_WRITEFAILED = -2;
+    public static final int PL_PRINTRESULT_PORT_READFAILED = -3;
+    public static final int PL_PRINTRESULT_PRINTER_OFFLINE = -102;
+    public static final int PL_PRINTRESULT_PRINTER_NOPAPER = -103;
+    public static final int PL_PRINTRESULT_OTHER_RERROR = -101;
+
+
+    public class PL_PRINTERSTATUS_Helper {
+        public static boolean PL_PRINTERSTATUS_DRAWER_OPENED(long status) { return (((status >> 0) & 0x04) == 0x00); };
+        public static boolean PL_PRINTERSTATUS_OFFLINE(long status) { return (((status >> 0) & 0x08) == 0x08); };
+        public static boolean PL_PRINTERSTATUS_COVERUP(long status) { return (((status >> 8) & 0x04) == 0x04); };
+        public static boolean PL_PRINTERSTATUS_FEED_PRESSED(long status) { return (((status >> 8) & 0x08) == 0x08); };
+        public static boolean PL_PRINTERSTATUS_NOPAPER(long status) { return (((status >> 8) & 0x20) == 0x20); };
+        public static boolean PL_PRINTERSTATUS_ERROR_OCCURED(long status) { return (((status >> 8) & 0x40) == 0x40); };
+        public static boolean PL_PRINTERSTATUS_CUTTER_ERROR(long status) { return (((status >> 16) & 0x08) == 0x08); };
+        public static boolean PL_PRINTERSTATUS_UNRECOVERABLE_ERROR(long status) { return (((status >> 16) & 0x20) == 0x20); };
+        public static boolean PL_PRINTERSTATUS_DEGREE_OR_VOLTAGE_OVERRANGE(long status) { return (((status >> 16) & 0x40) == 0x40); };
+        public static boolean PL_PRINTERSTATUS_PAPER_NEAREND(long status) { return (((status >> 24) & 0x0C) == 0x0C); };
+        public static boolean PL_PRINTERSTATUS_PAPER_TAKEOUT(long status) { return (((status >> 24) & 0x04) == 0x04); };
+    }
+
+
+    public static final int PrintDensity_Light = 0;
+    public static final int PrintDensity_Normal = 1;
+    public static final int PrintDensity_Dark = 2;
+
+
+    public static final int DrawAlignment_Left = -1;
+    public static final int DrawAlignment_HCenter = -2;
+    public static final int DrawAlignment_Right = -3;
+    public static final int DrawAlignment_Top = -1;
+    public static final int DrawAlignment_VCenter = -2;
+    public static final int DrawAlignment_Bottom = -3;
+
+
+    public static final int MultiByteModeEncoding_GBK = 0;
+    public static final int MultiByteModeEncoding_UTF8 = 1;
+    public static final int MultiByteModeEncoding_BIG5 = 3;
+    public static final int MultiByteModeEncoding_ShiftJIS = 4;
+    public static final int MultiByteModeEncoding_EUCKR = 5;
+
+
+    public static final int CharacterSet_USA = 0;
+    public static final int CharacterSet_FRANCE = 1;
+    public static final int CharacterSet_GERMANY = 2;
+    public static final int CharacterSet_UK = 3;
+    public static final int CharacterSet_DENMARK_I = 4;
+    public static final int CharacterSet_SWEDEN = 5;
+    public static final int CharacterSet_ITALY = 6;
+    public static final int CharacterSet_SPAIN_I = 7;
+    public static final int CharacterSet_JAPAN = 8;
+    public static final int CharacterSet_NORWAY = 9;
+    public static final int CharacterSet_DENMARK_II = 10;
+    public static final int CharacterSet_SPAIN_II = 11;
+    public static final int CharacterSet_LATIN = 12;
+    public static final int CharacterSet_KOREA = 13;
+    public static final int CharacterSet_SLOVENIA = 14;
+    public static final int CharacterSet_CHINA = 15;
+
+
+    public static final int CharacterCodepage_CP437 = 0;
+    public static final int CharacterCodepage_KATAKANA = 1;
+    public static final int CharacterCodepage_CP850 = 2;
+    public static final int CharacterCodepage_CP860 = 3;
+    public static final int CharacterCodepage_CP863 = 4;
+    public static final int CharacterCodepage_CP865 = 5;
+    public static final int CharacterCodepage_WCP1251 = 6;
+    public static final int CharacterCodepage_CP866 = 7;
+    public static final int CharacterCodepage_MIK = 8;
+    public static final int CharacterCodepage_CP755 = 9;
+    public static final int CharacterCodepage_IRAN = 10;
+    public static final int CharacterCodepage_CP862 = 15;
+    public static final int CharacterCodepage_WCP1252 = 16;
+    public static final int CharacterCodepage_WCP1253 = 17;
+    public static final int CharacterCodepage_CP852 = 18;
+    public static final int CharacterCodepage_CP858 = 19;
+    public static final int CharacterCodepage_IRAN_II = 20;
+    public static final int CharacterCodepage_LATVIAN = 21;
+    public static final int CharacterCodepage_CP864 = 22;
+    public static final int CharacterCodepage_ISO_8859_1 = 23;
+    public static final int CharacterCodepage_CP737 = 24;
+    public static final int CharacterCodepage_WCP1257 = 25;
+    public static final int CharacterCodepage_THAI = 26;
+    public static final int CharacterCodepage_CP720 = 27;
+    public static final int CharacterCodepage_CP855 = 28;
+    public static final int CharacterCodepage_CP857 = 29;
+    public static final int CharacterCodepage_WCP1250 = 30;
+    public static final int CharacterCodepage_CP775 = 31;
+    public static final int CharacterCodepage_WCP1254 = 32;
+    public static final int CharacterCodepage_WCP1255 = 33;
+    public static final int CharacterCodepage_WCP1256 = 34;
+    public static final int CharacterCodepage_WCP1258 = 35;
+    public static final int CharacterCodepage_ISO_8859_2 = 36;
+    public static final int CharacterCodepage_ISO_8859_3 = 37;
+    public static final int CharacterCodepage_ISO_8859_4 = 38;
+    public static final int CharacterCodepage_ISO_8859_5 = 39;
+    public static final int CharacterCodepage_ISO_8859_6 = 40;
+    public static final int CharacterCodepage_ISO_8859_7 = 41;
+    public static final int CharacterCodepage_ISO_8859_8 = 42;
+    public static final int CharacterCodepage_ISO_8859_9 = 43;
+    public static final int CharacterCodepage_ISO_8859_15 = 44;
+    public static final int CharacterCodepage_THAI_2 = 45;
+    public static final int CharacterCodepage_CP856 = 46;
+    public static final int CharacterCodepage_CP874 = 47;
+    public static final int CharacterCodepage_TCVN3 = 48;
+
+
+    public static final int BarcodeReadableTextPosition_None = 0;
+    public static final int BarcodeReadableTextPosition_AboveBarcode = 1;
+    public static final int BarcodeReadableTextPosition_BelowBarcode = 2;
+    public static final int BarcodeReadableTextPosition_AboveAndBelowBarcode = 3;
+
+
+    public static final int QRCodeECC_L = 1;
+    public static final int QRCodeECC_M = 2;
+    public static final int QRCodeECC_Q = 3;
+    public static final int QRCodeECC_H = 4;
+
+
+    public static final int ImagePixelsFormat_MONO = 1;
+    public static final int ImagePixelsFormat_MONOLSB = 2;
+    public static final int ImagePixelsFormat_GRAY8 = 3;
+    public static final int ImagePixelsFormat_BYTEORDERED_RGB24 = 4;
+    public static final int ImagePixelsFormat_BYTEORDERED_BGR24 = 5;
+    public static final int ImagePixelsFormat_BYTEORDERED_ARGB32 = 6;
+    public static final int ImagePixelsFormat_BYTEORDERED_RGBA32 = 7;
+    public static final int ImagePixelsFormat_BYTEORDERED_ABGR32 = 8;
+    public static final int ImagePixelsFormat_BYTEORDERED_BGRA32 = 9;
+
+
+    public static final int ImageBinarizationMethod_Dithering = 0;
+    public static final int ImageBinarizationMethod_Thresholding = 1;
+
+
+    public static final int LabelRotation_0 = 0;
+    public static final int LabelRotation_90 = 1;
+    public static final int LabelRotation_180 = 2;
+    public static final int LabelRotation_270 = 3;
+
+
+    public static final int PL_LABEL_TEXT_STYLE_BOLD = (1<<0);
+    public static final int PL_LABEL_TEXT_STYLE_UNDERLINE = (1<<1);
+    public static final int PL_LABEL_TEXT_STYLE_HIGHLIGHT = (1<<2);
+    public static final int PL_LABEL_TEXT_STYLE_STRIKETHROUGH = (1<<3);
+    public static final int PL_LABEL_TEXT_STYLE_ROTATION_0 = (0<<4);
+    public static final int PL_LABEL_TEXT_STYLE_ROTATION_90 = (1<<4);
+    public static final int PL_LABEL_TEXT_STYLE_ROTATION_180 = (2<<4);
+    public static final int PL_LABEL_TEXT_STYLE_ROTATION_270 = (3<<4);
+    public class PL_LABEL_TEXT_STYLE_Helper {
+        public static int PL_LABEL_TEXT_STYLE_WIDTH_ENLARGEMENT(int n) { return ((n)<<8); };
+        public static int PL_LABEL_TEXT_STYLE_HEIGHT_ENLARGEMENT(int n) { return ((n)<<12); };
+    }
+
+
+    public static final int LabelBarcodeType_UPCA = 0;
+    public static final int LabelBarcodeType_UPCE = 1;
+    public static final int LabelBarcodeType_EAN13 = 2;
+    public static final int LabelBarcodeType_EAN8 = 3;
+    public static final int LabelBarcodeType_CODE39 = 4;
+    public static final int LabelBarcodeType_ITF = 5;
+    public static final int LabelBarcodeType_CODEBAR = 6;
+    public static final int LabelBarcodeType_CODE93 = 7;
+    public static final int LabelBarcodeType_CODE128 = 8;
+    public static final int LabelBarcodeType_CODE11 = 9;
+    public static final int LabelBarcodeType_MSI = 10;
+    public static final int LabelBarcodeType_128M = 11;
+    public static final int LabelBarcodeType_EAN128 = 12;
+    public static final int LabelBarcodeType_25C = 13;
+    public static final int LabelBarcodeType_39C = 14;
+    public static final int LabelBarcodeType_39 = 15;
+    public static final int LabelBarcodeType_EAN13PLUS2 = 16;
+    public static final int LabelBarcodeType_EAN13PLUS5 = 17;
+    public static final int LabelBarcodeType_EAN8PLUS2 = 18;
+    public static final int LabelBarcodeType_EAN8PLUS5 = 19;
+    public static final int LabelBarcodeType_POST = 20;
+    public static final int LabelBarcodeType_UPCAPLUS2 = 21;
+    public static final int LabelBarcodeType_UPCAPLUS5 = 22;
+    public static final int LabelBarcodeType_UPCEPLUS2 = 23;
+    public static final int LabelBarcodeType_UPCEPLUS5 = 24;
+    public static final int LabelBarcodeType_CPOST = 25;
+    public static final int LabelBarcodeType_MSIC = 26;
+    public static final int LabelBarcodeType_PLESSEY = 27;
+    public static final int LabelBarcodeType_ITF14 = 28;
+    public static final int LabelBarcodeType_EAN14 = 29;
+
+
+    public static final int LabelColor_White = 0;
+    public static final int LabelColor_Black = 1;
+
+//      get library version string
+//
+//  return
+//      return library version string
+    public String CaysnLabel_LibraryVersion();
+
+//      Enumerate serial port
+//
+//  pBuf
+//      The buffer to save enumerated port list
+//
+//  cbBuf
+//      The buffer size
+//
+//  pcbNeeded
+//      The buffer bytes needed
+//
+//  return
+//      Enumerated port count
+    public int CaysnLabel_EnumComA(byte[] pBuf, int cbBuf, IntByReference pcbNeeded);
+    //public int CaysnLabel_EnumComW(byte[] pBuf, int cbBuf, IntByReference pcbNeeded);
+    public class CaysnLabel_EnumCom_Helper {
+        public static String[] CaysnLabel_EnumComA() {
+            IntByReference pcbNeeded = new IntByReference();
+            INSTANCE.CaysnLabel_EnumComA(null, 0, pcbNeeded);
+            if (pcbNeeded.getValue() > 0) {
+                byte[] pBuf = new byte[pcbNeeded.getValue()];
+                if (pBuf != null) {
+                    INSTANCE.CaysnLabel_EnumComA(pBuf, pBuf.length, null);
+                    String s = new String(pBuf);
+                    String[] ss = s.split("\0");
+                    return ss;
+                }
+            }
+            return null;
+        }
+    }
+
+//      Enumerate usb port
+//
+//  pBuf
+//      The buffer to save enumerated port list
+//
+//  cbBuf
+//      The buffer size
+//
+//  pcbNeeded
+//      The buffer bytes needed
+//
+//  return
+//      Enumerated port count
+    public int CaysnLabel_EnumUsbVidPidA(byte[] pBuf, int cbBuf, IntByReference pcbNeeded);
+    //public int CaysnLabel_EnumUsbVidPidW(byte[] pBuf, int cbBuf, IntByReference pcbNeeded);
+    public class CaysnLabel_EnumUsbVidPid_Helper {
+        public static String[] CaysnLabel_EnumUsbVidPidA() {
+            IntByReference pcbNeeded = new IntByReference();
+            INSTANCE.CaysnLabel_EnumUsbVidPidA(null, 0, pcbNeeded);
+            if (pcbNeeded.getValue() > 0) {
+                byte[] pBuf = new byte[pcbNeeded.getValue()];
+                if (pBuf != null) {
+                    INSTANCE.CaysnLabel_EnumUsbVidPidA(pBuf, pBuf.length, null);
+                    String s = new String(pBuf);
+                    String[] ss = s.split("\0");
+                    return ss;
+                }
+            }
+            return null;
+        }
+    }
+
+//      Enumerate net printer
+//
+//  timeout
+//      enumrate timeout ms
+// 
+//  cancel
+//      cancel bit, if value is non-zero, enum process will exit.
+//  
+//  on_discovered
+//      enumrated callback function
+//
+//  private_data
+//      the parameter passed to callback function
+//
+//  return
+//      none
+    interface on_netprinter_discovered_a_callback extends Callback {
+        void on_netprinter_discovered_a(String local_ip, String discovered_mac, String discovered_ip, String discovered_name, Pointer private_data);
+    }
+    public void CaysnLabel_EnumNetPrinterA(int timeout, IntByReference cancel, on_netprinter_discovered_a_callback callback, Pointer data);
+
+//      Enumerate bt 2.0 printer
+//
+//  on_discovered
+//      enumrated callback function
+//
+//  private_data
+//      the parameter passed to callback function
+//
+//  return
+//      none
+    interface on_btdevice_discovered_a_callback extends Callback {
+        void on_btdevice_discovered_a(String device_name, String device_address, Pointer private_data);
+    }
+    public void CaysnLabel_EnumBtDeviceA(int timeout, IntByReference cancel, on_btdevice_discovered_a_callback callback, Pointer data);
+
+//      Enumerate bt 4.0 printer
+//
+//  on_discovered
+//      enumrated callback function
+//
+//  private_data
+//      the parameter passed to callback function
+//
+//  return
+//      none
+    public void CaysnLabel_EnumBleDeviceA(int timeout, IntByReference cancel, on_btdevice_discovered_a_callback callback, Pointer data);
+
+//      Open com port
+//
+// name 
+//      port name
+//      for example COM1,COM2,COM3,...COM11...
+//
+// baudrate 
+//      baudrate
+//      Normally choose 9600,19200,38400,57600,115200.
+//      Need to keep the same as printer baudrate, suggest using high baudrate to get better printing speed.
+//
+// databits
+//      databits, value range is [4,8]
+//
+// parity 
+//      Parity bit, The values are defined as follows:
+//      value    define
+//      0     no parity
+//      1     odd parity
+//      2     even parity
+//      3     mark parity
+//      4     space parity
+//
+// stopbits 
+//      Parity bit, The values are defined as follows:
+//      value    define
+//      0     1bit stopbits
+//      1     1.5bit stopbits
+//      2     2bit stopbits
+//
+// flowcontrol
+//      flow control
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      If serial port was occupied, open serial will fail
+//      If baud rate don't match with printer baud rate, it won't print.
+    public Pointer CaysnLabel_OpenComA(String name, int baudrate, int databits, int parity, int stopbits, int flowcontrol);
+    public Pointer CaysnLabel_OpenComW(WString name, int baudrate, int databits, int parity, int stopbits, int flowcontrol);
+
+//      Open Tcp
+//
+// ip 
+//      IP Addres or printer name
+//      For example: 192.168.1.87
+//
+// port 
+//      Port Number
+//      Fixed value: 9100
+//
+// timeout
+//      connect timeout
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      PC and printer need in the same network segment, so they can connect
+    public Pointer CaysnLabel_OpenTcpA(String ip, short port, int timeout);
+    public Pointer CaysnLabel_OpenTcpW(WString ip, short port, int timeout);
+
+//      specify interface Open Tcp
+//
+// ip 
+//      IP Addres or printer name
+//      For example: 192.168.1.87
+//
+// port 
+//      Port Number
+//      Fixed value: 9100
+//
+// bind_local_addr 
+//      bind to local ip 
+//      if there is multiple network cards, you can specify the item 
+//      you can also set 0 to auto select
+//
+// timeout
+//      connect timeout
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      PC and printer need in the same network segment, so they can connect
+    public Pointer CaysnLabel_OpenTcpBindInterfaceA(String ip, short port, String bind_local_addr, int timeout);
+    public Pointer CaysnLabel_OpenTcpBindInterfaceW(WString ip, short port, WString bind_local_addr, int timeout);
+
+//      Open Usb
+//
+// vid 
+//      usb vid
+//
+// pid
+//      usb pid
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      only for android
+    public Pointer CaysnLabel_OpenUsbVidPid(short vid, short pid);
+    public Pointer CaysnLabel_OpenUsbVidPidStringA(String name);
+    public Pointer CaysnLabel_OpenUsbVidPidStringW(WString name);
+
+//      Connect Bluetooth2.0 Printer
+//
+// address 
+//      bluetooth address
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      only for android
+    public Pointer CaysnLabel_OpenBT2ByConnectA(String address);
+    public Pointer CaysnLabel_OpenBT2ByConnectW(WString address);
+
+//      Listen Bluetooth2.0 Printer
+//
+// timeout
+//      connect timeout
+//
+// address 
+//      save connected printer bluetooth address
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      only for android
+    public Pointer CaysnLabel_OpenBT2ByListenA(int timeout, byte[] address);
+
+//      Connect Bluetooth4.0 Printer
+//
+// address 
+//      bluetooth address
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      only for android
+    public Pointer CaysnLabel_OpenBT4ByConnectA(String address);
+    public Pointer CaysnLabel_OpenBT4ByConnectW(WString address);
+
+//      Open file
+//
+// name
+//      file name
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      just can write, but can't read
+//      All the query status function are invalid
+    public Pointer CaysnLabel_OpenFileNewA(String name);
+    public Pointer CaysnLabel_OpenFileNewW(WString name);
+
+//      Open file, the data will append to the file
+//
+// name
+//      file name
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      just can write, but can't read
+//      All the query status function are invalid
+    public Pointer CaysnLabel_OpenFileAppendA(String name);
+    public Pointer CaysnLabel_OpenFileAppendW(WString name);
+
+//      alloc an memory space, the data will write to the memory
+//
+// nMemorySpaceSize
+//      memory space size
+//
+// return 
+//      Return handle, If open success, return non-zero value, else return zero.
+//
+// remarks
+//      just can write, but can't read
+//      All the query status function are invalid
+//      data accessed by MemoryData MemoryDataLength
+//      data clear by ClearMemoryData
+    public Pointer CaysnLabel_OpenMemory(int nMemorySpaceSize);
+
+//      get memory data
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      memory pointer
+//
+// remarks
+//      none
+    public Pointer CaysnLabel_MemoryData(Pointer handle);
+    public class CaysnLabel_MemoryData_Helper {
+        public static byte[] CaysnLabel_MemoryByteArray(Pointer handle) {
+            Pointer pdata = INSTANCE.CaysnLabel_MemoryData(handle);
+            int data_size = INSTANCE.CaysnLabel_MemoryDataLength(handle);
+            if (pdata != Pointer.NULL) {
+                byte[] buffer = pdata.getByteArray(0, data_size);
+                return buffer;
+            }
+            return null;
+        }
+    }
+
+//      memory data length
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      memory data length
+//
+// remarks
+//      none
+    public int CaysnLabel_MemoryDataLength(Pointer handle);
+
+//      clear memory data buffer
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      none
+//
+// remarks
+//      none
+    public void CaysnLabel_ClearMemoryData(Pointer handle);
+
+
+    interface on_bytes_writed_callback extends Callback {
+        // callback not support byte[]
+        void on_bytes_writed(Pointer buffer, int count, Pointer private_data);
+    }
+    public int CaysnLabel_SetWritedEvent(Pointer handle, on_bytes_writed_callback callback, Pointer private_data);
+
+
+    interface on_bytes_readed_callback extends Callback {
+        // callback not support byte[]
+        void on_bytes_readed(Pointer buffer, int count, Pointer private_data);
+    }
+    public int CaysnLabel_SetReadedEvent(Pointer handle, on_bytes_readed_callback callback, Pointer private_data);
+
+
+    interface on_port_closed_callback extends Callback {
+        void on_port_closed(Pointer private_data);
+    }
+    public int CaysnLabel_SetClosedEvent(Pointer handle, on_port_closed_callback callback, Pointer private_data);
+
+//      Write data to port
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// buffer 
+//      buffer
+//
+// count 
+//      buffer length
+//
+// timeout 
+//      Timeout ms
+//
+// return 
+//      return bytes writted. or return -1 means failed
+    public int CaysnLabel_Write(Pointer handle, byte[] buffer, int count, int timeout);
+
+//      Receive data from port
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// buffer 
+//      buffer
+//
+// count 
+//      buffer length
+//
+// timeout 
+//      Timeout ms
+//
+// return 
+//      return bytes readed. or return -1 means failed
+    public int CaysnLabel_Read(Pointer handle, byte[] buffer, int count, int timeout);
+
+//      Receive data from port
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// buffer 
+//      buffer
+//
+// count 
+//      buffer length
+//
+// timeout 
+//      Timeout ms
+//
+// breakByte
+//      break read byte
+//
+// return 
+//      return bytes readed. or return -1 means failed
+    public int CaysnLabel_ReadUntilByte(Pointer handle, byte[] buffer, int count, int timeout, byte breakByte);
+
+//      Skip receive buffer
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      none
+    public void CaysnLabel_SkipAvailable(Pointer handle);
+
+//      flush write buffer, only available for Prn Port
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      none
+    public void CaysnLabel_FlushBuffer(Pointer handle);
+
+//      Close Port
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      none
+    public void CaysnLabel_Close(Pointer handle);
+
+//      Query and wait for the printer buffer empty
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// timeout 
+//      timeout ms
+//
+// return 
+//      return whether the buffer is empty. the value defined as follow:
+//      value define
+//      0     printer buffer is empty
+//      -1    the port is closed
+//      -2    write failed
+//      -3    read failed
+//      -4    printer buffer is not empty
+    public int CaysnLabel_QueryPrinterBufferEmpty(Pointer handle, int timeout);
+
+//      real time query printer status(drawer, paper, error)
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// timeout 
+//      timeout ms
+//
+// return 
+//      return printer status, or -1 if query status failed
+//      can access detailed status information via macro definition
+    public int CaysnLabel_QueryPrinterStatus(Pointer handle, int timeout);
+
+//      Query print result
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// timeout 
+//      timeout ms
+//
+// return 
+//      return value indicate the print result.
+//      the value defined as follow:
+//      value define
+//      0     print success
+//      -1    the port is closed
+//      -2    write failed
+//      -3    read failed
+//      -4    printer no response
+//      -102    printer is offline
+//      -103    printer is nopaper
+//      -101    other error
+    public int CaysnLabel_QueryPrintResult(Pointer handle, int timeout);
+
+//      Turn on cashbox
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nDrawerIndex 
+//      Cashbox no, value are defined as follow:
+//      value      define
+//        0      Cashbox pin 2
+//        1      Cashbox pin 5
+//
+// nHighLevelTime 
+//      Cashbox pulse high potential ms time
+//
+// nLowLevelTime 
+//      Cashbox pulse low potential ms time
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_KickOutDrawer(Pointer handle, int nDrawerIndex, int nHighLevelTime, int nLowLevelTime);
+
+//      Buzzer call
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nBeepCount
+//      Calling times
+//
+// nBeepMs
+//      Calling time ms, value range is [100,900], flour to 100 milliseconds.
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_Beep(Pointer handle, int nBeepCount, int nBeepMs);
+
+//      reset printer, clear settings
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_ResetPrinter(Pointer handle);
+
+//      set printer
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// setType
+//      set type
+//
+// buffer 
+//      buffer
+//
+// count 
+//      buffer length
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetPrinter(Pointer handle, int setType, byte[] buffer, int count);
+
+//      set print speed (some printer suppert)
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nSpeed
+//      print speed in mm/s
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetPrintSpeed(Pointer handle, int nSpeed);
+
+//      set print density (some printer suppert)
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nDensity
+//      the print density, the value defined as follow:
+//      value define
+//      0     light
+//      1     normal
+//      2     dark
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetPrintDensity(Pointer handle, int nDensity);
+
+//      set print heat para (some printer suppert)
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nMaxHeatDots
+//      max heat dots
+//
+// nHeatOnTime
+//      heat on time(us)
+//
+// nHeatOffTime
+//      heat off time(us)
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetPrintHeatPara(Pointer handle, int nMaxHeatDots, int nHeatOnTime, int nHeatOffTime);
+
+//      printer print self test page
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_PrintSelfTestPage(Pointer handle);
+
+//      set printer to single byte mode
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetSingleByteMode(Pointer handle);
+
+//      set print speed (some printer suppert)
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nCharacterSet
+//      character set, range is [0, 15]
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetCharacterSet(Pointer handle, int nCharacterSet);
+
+//      set character codepage
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nCharacterCodepage
+//      character codepage, range is [0,255]
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetCharacterCodepage(Pointer handle, int nCharacterCodepage);
+
+//      set printer to multi byte mode
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetMultiByteMode(Pointer handle);
+
+//      set printer multi byte encoding
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nEncoding
+//      multi byte encoding, values defined as follow:
+//      value define
+//      0     GBK
+//      1     UTF8
+//      3     BIG5
+//      4     SHIFT-JIS
+//      5     EUC-KR
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetMultiByteEncoding(Pointer handle, int nEncoding);
+
+//      set barcode readable text print position
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// nTextPosition
+//      barcode readable text position, value range is [0, 3].
+//      value defined as follow:
+//      value define
+//      0     don't show readable text
+//      1     show readable text below barcode
+//      2     show readable text above barcode
+//      3     show readable text above and below barcode
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_SetBarcodeReadableTextPosition(Pointer handle, int nTextPosition);
+
+//      get image width and height
+//
+// pszFile 
+//      image file path
+//
+// depth
+//      image depth
+//
+// width 
+//      image width
+//
+// height 
+//      image height
+//
+// return 
+//      The return value indicates whether a successful. return of true indicates success, or false indicates failure
+    public int CaysnLabel_GetImageSizeFromFileA(String pszFile, IntByReference depth, IntByReference width, IntByReference height);
+    public int CaysnLabel_GetImageSizeFromFileW(WString pszFile, IntByReference depth, IntByReference width, IntByReference height);
+
+//      Get the image width and height from the image data
+//
+// data 
+//      image data
+//
+// data_size 
+//      image data size
+//
+// depth
+//      image depth
+//
+// width 
+//      image width
+//
+// height 
+//      image height
+//
+// return 
+//      The return value indicates whether a successful. return of true indicates success, or false indicates failure
+// 
+// remarks
+//      Supports access to mainstream image format information, including but not limited to BMP,JPG,PNG, etc.
+    public int CaysnLabel_GetImageSizeFromData(byte[] data, int data_size, IntByReference depth, IntByReference width, IntByReference height);
+
+//      enable label mode
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_EnableLabelMode(Pointer handle);
+
+//      disable label mode
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DisableLabelMode(Pointer handle);
+
+//      calibrate page(change to different label paper, need calibration)
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_CalibrateLabel(Pointer handle);
+
+//      Feed paper to gap
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_FeedLabel(Pointer handle);
+
+//       assign the start of a Page, and set Page size, reference point coordinates and page rotation.
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      page start point x coordinates
+//
+// y
+//      page start point y coordinates
+//
+// width
+//      page width
+//
+// height
+//      page height
+//
+// rotation
+//      page rotating. The value range of rotate is {0,1}. Page doesn't rotate to print as 0, and rotate 90 degree to print as 1.
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_PageBegin(Pointer handle, int x, int y, int width, int height, int rotation);
+
+//       It is only the end of a Page
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_PageEnd(Pointer handle);
+
+//      print the Page contents to label paper
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// copies
+//      print copies
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_PagePrint(Pointer handle, int copies);
+
+//       draw text in assigned position of Page.only for single line
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      define text start position x coordinates,the value range is: [0,Page_Width-1]
+//
+// y
+//      define text start position y coordinates,the value range is: [0,Page_Height-1]
+//
+// font
+//      Choose font, only can use 24. some printer can use other value.
+//
+// style
+//      chracter style.
+//      Databits                 define
+//      0 Bold flag bit:         font bold for 1,don't bold if reset zero clearing.
+//      1 underline flag bit:    underline text for 1, don't underline if rest zero clearing
+//      2 inverse flag bit:      inverse for 1(white in black), don't inverse rest zero clearing
+//      3 delete line flage bit: for 1 text with delete line,don't delete line if reset zero clearing.
+//      [5,4]  rotate flag bit:  00 rotates 0 degree
+//                               01 rotates 90 degree
+//                               10 rotates 180 degree
+//                               11 rotates 270 degree
+//      [11,8] font width magnification times;
+//      [15,12] font height magnification times;
+//
+// str 
+//      the string to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawTextA(Pointer handle, int x, int y, int font, int style, String str);
+
+//       draw text in assigned position of Page.only for single line
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      define text start position x coordinates,the value range is: [0,Page_Width-1]
+//
+// y
+//      define text start position y coordinates,the value range is: [0,Page_Height-1]
+//
+// font
+//      Choose font, only can use 24. some printer can use other value.
+//
+// style
+//      chracter style.
+//      Databits                 define
+//      0 Bold flag bit:         font bold for 1,don't bold if reset zero clearing.
+//      1 underline flag bit:    underline text for 1, don't underline if rest zero clearing
+//      2 inverse flag bit:      inverse for 1(white in black), don't inverse rest zero clearing
+//      3 delete line flage bit: for 1 text with delete line,don't delete line if reset zero clearing.
+//      [5,4]  rotate flag bit:  00 rotates 0 degree
+//                               01 rotates 90 degree
+//                               10 rotates 180 degree
+//                               11 rotates 270 degree
+//      [11,8] font width magnification times;
+//      [15,12] font height magnification times;
+//
+// str 
+//      the string to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+// 
+// remarks
+//      The function converts the data to UTF8 encoding.
+    public int CaysnLabel_DrawTextInUTF8W(Pointer handle, int x, int y, int font, int style, WString str);
+
+//       draw text in assigned position of Page.only for single line
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      define text start position x coordinates,the value range is: [0,Page_Width-1]
+//
+// y
+//      define text start position y coordinates,the value range is: [0,Page_Height-1]
+//
+// font
+//      Choose font, only can use 24. some printer can use other value.
+//
+// style
+//      chracter style.
+//      Databits                 define
+//      0 Bold flag bit:         font bold for 1,don't bold if reset zero clearing.
+//      1 underline flag bit:    underline text for 1, don't underline if rest zero clearing
+//      2 inverse flag bit:      inverse for 1(white in black), don't inverse rest zero clearing
+//      3 delete line flage bit: for 1 text with delete line,don't delete line if reset zero clearing.
+//      [5,4]  rotate flag bit:  00 rotates 0 degree
+//                               01 rotates 90 degree
+//                               10 rotates 180 degree
+//                               11 rotates 270 degree
+//      [11,8] font width magnification times;
+//      [15,12] font height magnification times;
+//
+// str 
+//      the string to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+// 
+// remarks
+//      The function converts the data to GBK encoding.
+    public int CaysnLabel_DrawTextInGBKW(Pointer handle, int x, int y, int font, int style, WString str);
+
+//       draw text in assigned position of Page.only for single line
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      define text start position x coordinates,the value range is: [0,Page_Width-1]
+//
+// y
+//      define text start position y coordinates,the value range is: [0,Page_Height-1]
+//
+// font
+//      Choose font, only can use 24. some printer can use other value.
+//
+// style
+//      chracter style.
+//      Databits                 define
+//      0 Bold flag bit:         font bold for 1,don't bold if reset zero clearing.
+//      1 underline flag bit:    underline text for 1, don't underline if rest zero clearing
+//      2 inverse flag bit:      inverse for 1(white in black), don't inverse rest zero clearing
+//      3 delete line flage bit: for 1 text with delete line,don't delete line if reset zero clearing.
+//      [5,4]  rotate flag bit:  00 rotates 0 degree
+//                               01 rotates 90 degree
+//                               10 rotates 180 degree
+//                               11 rotates 270 degree
+//      [11,8] font width magnification times;
+//      [15,12] font height magnification times;
+//
+// str 
+//      the string to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+// 
+// remarks
+//      The function converts the data to BIG5 encoding.
+    public int CaysnLabel_DrawTextInBIG5W(Pointer handle, int x, int y, int font, int style, WString str);
+
+//       draw text in assigned position of Page.only for single line
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      define text start position x coordinates,the value range is: [0,Page_Width-1]
+//
+// y
+//      define text start position y coordinates,the value range is: [0,Page_Height-1]
+//
+// font
+//      Choose font, only can use 24. some printer can use other value.
+//
+// style
+//      chracter style.
+//      Databits                 define
+//      0 Bold flag bit:         font bold for 1,don't bold if reset zero clearing.
+//      1 underline flag bit:    underline text for 1, don't underline if rest zero clearing
+//      2 inverse flag bit:      inverse for 1(white in black), don't inverse rest zero clearing
+//      3 delete line flage bit: for 1 text with delete line,don't delete line if reset zero clearing.
+//      [5,4]  rotate flag bit:  00 rotates 0 degree
+//                               01 rotates 90 degree
+//                               10 rotates 180 degree
+//                               11 rotates 270 degree
+//      [11,8] font width magnification times;
+//      [15,12] font height magnification times;
+//
+// str 
+//      the string to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+// 
+// remarks
+//      The function converts the data to ShiftJIS encoding.
+    public int CaysnLabel_DrawTextInShiftJISW(Pointer handle, int x, int y, int font, int style, WString str);
+
+//       draw text in assigned position of Page.only for single line
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      define text start position x coordinates,the value range is: [0,Page_Width-1]
+//
+// y
+//      define text start position y coordinates,the value range is: [0,Page_Height-1]
+//
+// font
+//      Choose font, only can use 24. some printer can use other value.
+//
+// style
+//      chracter style.
+//      Databits                 define
+//      0 Bold flag bit:         font bold for 1,don't bold if reset zero clearing.
+//      1 underline flag bit:    underline text for 1, don't underline if rest zero clearing
+//      2 inverse flag bit:      inverse for 1(white in black), don't inverse rest zero clearing
+//      3 delete line flage bit: for 1 text with delete line,don't delete line if reset zero clearing.
+//      [5,4]  rotate flag bit:  00 rotates 0 degree
+//                               01 rotates 90 degree
+//                               10 rotates 180 degree
+//                               11 rotates 270 degree
+//      [11,8] font width magnification times;
+//      [15,12] font height magnification times;
+//
+// str 
+//      the string to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+// 
+// remarks
+//      The function converts the data to EUCKR encoding.
+    public int CaysnLabel_DrawTextInEUCKRW(Pointer handle, int x, int y, int font, int style, WString str);
+
+//      Draw 1D code in the assigned position of Page
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      barcode top left corner x coordinates, the value range is: [0,Page_Width-1]
+//
+// y
+//      barcode top left corner y coordinates, the value range is: [0,Page_Height-1]
+//
+// nBarcodeType 
+//      barcode type
+//      values are defined as macros
+//
+// height
+//      define barcode height
+//
+// unitwidth
+//      It assigns the basic element width. value range is [1, 4].
+//
+// rotation
+//      Mean rotating angle,
+//      the value range is: [0, 3].
+//      Definitions are as below:
+//      Rotate value define
+//      0 doesn't rotate to draw
+//      1 rotates 90 degree draw.
+//      2 rotates 180 degree draw.
+//      3 rotates 270 degree draw
+//
+// str 
+//      the barcode data to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawBarcodeA(Pointer handle, int x, int y, int nBarcodeType, int height, int unitwidth, int rotation, String str);
+    public int CaysnLabel_DrawBarcodeW(Pointer handle, int x, int y, int nBarcodeType, int height, int unitwidth, int rotation, WString str);
+
+//      print qrcode
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      Top left corner x coordinates, the value range is: [0,Page_Width-1]
+//
+// y
+//      Top left corner y coordinates, the value range is: [0,Page_Height-1]
+//
+// nVersion 
+//      Assign charater version. The value range is:[0,16]
+//      When version is 0, printer caculates version number according to character set automatically.
+//
+// nECCLevel 
+//      Assign error correction level.
+//      The value range is: [1, 4].
+//      Definitios are as below:
+//      ECC error correction level
+//      1   L: 7%, low error correction, much data.
+//      2   M: 15%, medium error correction
+//      3   Q: optimize error correction
+//      4   H: 30%, the highest error correction, less data.
+//
+// unitwidth
+//      It assigns the basic element width. value range is [1, 4].
+//
+// rotation
+//      Mean rotating angle,
+//      the value range is: [0, 3].
+//      Definitions are as below:
+//      Rotate value define
+//      0 doesn't rotate to draw
+//      1 rotates 90 degree draw.
+//      2 rotates 180 degree draw.
+//      3 rotates 270 degree draw
+//
+// str 
+//      the qrcode data to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawQRCodeA(Pointer handle, int x, int y, int nVersion, int nECCLevel, int unitwidth, int rotation, String str);
+    public int CaysnLabel_DrawQRCodeW(Pointer handle, int x, int y, int nVersion, int nECCLevel, int unitwidth, int rotation, WString str);
+
+//      print pdf417code
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      Top left corner x coordinates, the value range is: [0,Page_Width-1]
+//
+// y
+//      Top left corner y coordinates, the value range is: [0,Page_Height-1]
+//
+// column 
+//      ColNum is colnum, which means how many digits in per line. A digit is 17*UnitWidth dots. Line number is produces automatically by printer,the limited range is 3~90. ColNum value range:[1,30].
+//
+// nECCLevel 
+//      Assign error correction level.
+//      The value range is: [0, 8].
+//      Ecc value, error correction number, stored files number(byte)
+//      0 2 1108
+//      1 4 1106
+//      2 8 1101
+//      3 16 1092
+//      4 32 1072
+//      5 64 1024
+//      6 128 957
+//      7 256 804
+//      8 512 496
+//
+// unitwidth
+//      It assigns the basic element width. value range is [1, 3].
+//
+// rotation
+//      Mean rotating angle,
+//      the value range is: [0, 3].
+//      Definitions are as below:
+//      Rotate value define
+//      0 doesn't rotate to draw
+//      1 rotates 90 degree draw.
+//      2 rotates 180 degree draw.
+//      3 rotates 270 degree draw
+//
+// str 
+//      the pdf417 data to print
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawPDF417CodeA(Pointer handle, int x, int y, int column, int nAspectRatio, int nECCLevel, int unitwidth, int rotation, String str);
+    public int CaysnLabel_DrawPDF417CodeW(Pointer handle, int x, int y, int column, int nAspectRatio, int nECCLevel, int unitwidth, int rotation, WString str);
+
+//      Draw picture in the assigned position of Page
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      Top left corner x coordinates, the value range is: [0,Page_Width-1]
+//
+// y
+//      Top left corner y coordinates, the value range is: [0,Page_Height-1]
+//
+// dstw 
+//      the width to print
+//
+// dsth 
+//      the height to print
+//
+// pszFile 
+//      image file path
+//
+// binaryzation_method
+//      image binaryzation method. 0 means use dithering, 1 means use thresholding.
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawImageFromFileA(Pointer handle, int x, int y, int dstw, int dsth, String pszFile, int binaryzation_method);
+    public int CaysnLabel_DrawImageFromFileW(Pointer handle, int x, int y, int dstw, int dsth, WString pszFile, int binaryzation_method);
+
+//      Draw picture in the assigned position of Page
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      Top left corner x coordinates, the value range is: [0,Page_Width-1]
+//
+// y
+//      Top left corner y coordinates, the value range is: [0,Page_Height-1]
+//
+// dstw 
+//      the width to print
+//
+// dsth 
+//      the height to print
+//
+// data 
+//      image data
+//
+// data_size 
+//      image data size
+//
+// binaryzation_method
+//      image binaryzation method. 0 means use dithering, 1 means use thresholding.
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawImageFromData(Pointer handle, int x, int y, int dstw, int dsth, byte[] data, int data_size, int binaryzation_method);
+    public class CaysnLabel_DrawImage_Helper {
+        public static int CaysnLabel_DrawImageFromBitmap(Pointer handle, int x, int y, int dstw, int dsth, Bitmap bitmap, int binaryzation_method) {
+            int result = 0;
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)) {
+                byte[] data = os.toByteArray();
+                result = INSTANCE.CaysnLabel_DrawImageFromData(handle, x, y, dstw, dsth, data, data.length, binaryzation_method);
+            }
+            return result;
+        }
+    }
+
+//      Draw picture in the assigned position of Page
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      Top left corner x coordinates, the value range is: [0,Page_Width-1]
+//
+// y
+//      Top left corner y coordinates, the value range is: [0,Page_Height-1]
+//
+// img_data 
+//      image pixels data
+//
+// img_datalen
+//      image pixels data length
+//
+// img_width 
+//      image pixel width
+//
+// img_height 
+//      image pixel height
+//
+// img_stride 
+//      image horizontal stirde. means bytes per line.
+//
+// img_format
+//      image pixel data format, values are defined as follow
+//      value define
+//      1     mono 
+//      2     monolsb 
+//      3     gray
+//      4     r.g.b in byte-ordered
+//      5     b.g.r in byte-ordered
+//      6     a.r.g.b in byte-ordered
+//      7     r.g.b.a in byte-ordered
+//      8     a.b.g.r in byte-ordered
+//      9     b.g.r.a in byte-ordered
+//
+// binaryzation_method
+//      image binaryzation method. 0 means use dithering, 1 means use thresholding.
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawImageFromPixels(Pointer handle, int x, int y, byte[] img_data, int img_datalen, int img_width, int img_height, int img_stride, int img_format, int binaryzation_method);
+
+//      draw line
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// startx
+//      straightway start point x coordinates,the value range is: [0,Page_Width-1]
+//
+// starty
+//      straightway start point y coordinates,the value range is: [0,Page_Height-1]
+//
+// endx
+//      straightway end point x coordinates,the value range is: [0,Page_Width-1]
+//
+// endy
+//      straightway end point y coordinates,the value range is:[0,Page_Height-1]
+//
+// linewidth
+//      line width
+//
+// linecolor
+//      line color, 0 means white, 1 means black.
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawLine(Pointer handle, int startx, int starty, int endx, int endy, int linewidth, int linecolor);
+
+//      draw rect
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      horizontal position
+//
+// y
+//      vertical position
+//
+// width
+//      rect width
+//
+// height
+//      rect height
+//
+// color
+//      rect color, 0 means white, 1 means black.
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawRect(Pointer handle, int x, int y, int width, int height, int color);
+
+//      draw box
+//
+// handle 
+//      Port handle, returned by OpenXXX
+//
+// x
+//      horizontal position
+//
+// y
+//      vertical position
+//
+// width
+//      box width
+//
+// height
+//      box height
+//
+// borderwidth
+//      box border width
+//
+// bordercolor
+//      box border color, 0 means white, 1 means black.
+//
+// return 
+//      If command is written successfully, it returns true else it returns false.
+    public int CaysnLabel_DrawBox(Pointer handle, int x, int y, int width, int height, int borderwidth, int bordercolor);
+
+
+}
+

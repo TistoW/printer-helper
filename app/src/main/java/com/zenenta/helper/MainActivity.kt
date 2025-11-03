@@ -11,8 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tisto.helpers.extension.formatRupiah
-import com.tisto.helpers.extension.toRupiah
+import com.tisto.printer.extension.formatRupiah
 import com.zenenta.helper.ui.theme.Zenentahelperv2Theme
 
 class MainActivity : ComponentActivity() {

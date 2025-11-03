@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tisto.helpers"
+    namespace = "com.tisto.printer"
     compileSdk = 36
 
     defaultConfig {

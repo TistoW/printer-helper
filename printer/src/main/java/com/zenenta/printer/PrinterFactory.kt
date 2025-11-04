@@ -39,6 +39,7 @@ object PrinterFactory {
         printer: Setting
     ): IPrinter {
         return when (printer.brandId) {
+            25L -> BlueprintThermalPrinterImpl(context, printer)
             0L -> {
                 if (printer.modelId!! < 4L) {
                     BlueprintThermalPrinterImpl(context, printer)
@@ -57,6 +58,7 @@ object PrinterFactory {
                     6L -> {
                         return Kassen923PrinterImpl(context, printer)
                     }
+
                     else -> {
                         return IminPrinterImpl(context, printer)
                     }
@@ -68,11 +70,13 @@ object PrinterFactory {
                     3L -> {
                         return SiliconPrinterImpl(context, printer)
                     }
+
                     else -> {
                         return IwarePrinterImpl(context, printer)
                     }
                 }
             }
+
             8L -> {
                 when (printer.modelId) {
                     0L -> {

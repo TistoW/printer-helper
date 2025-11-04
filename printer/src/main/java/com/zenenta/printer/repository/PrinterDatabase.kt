@@ -161,7 +161,7 @@ object PrinterDatabase {
     )
 
     val printerBrands = listOf(
-        PrinterBrand(0, "General", modelsGeneral),
+        PrinterBrand(25, "General", modelsGeneral),
         PrinterBrand(0, "BluePrint", modelsBluePrint),
         PrinterBrand(24, "COMSON", modelComson),
         PrinterBrand(1, "Enibit", modelsEnibit),

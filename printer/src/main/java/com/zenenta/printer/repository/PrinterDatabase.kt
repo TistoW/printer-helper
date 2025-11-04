@@ -157,7 +157,9 @@ object PrinterDatabase {
     )
 
     val printerBrands = listOf(
+        PrinterBrand(0, "General/Umum", modelsBluePrint),
         PrinterBrand(0, "BluePrint", modelsBluePrint),
+        PrinterBrand(24, "COMSON", modelComson),
         PrinterBrand(1, "Enibit", modelsEnibit),
         PrinterBrand(2, "Epson", modelsEpson),
         PrinterBrand(3, "EPPOS", modelsEppos),
@@ -169,18 +171,17 @@ object PrinterDatabase {
         PrinterBrand(9, "K-Touch", modelsKtouch),
         PrinterBrand(10, "MiniPos", modelsMiniPos),
         PrinterBrand(11, "Panda", modelsPanda),
+        PrinterBrand(22, "PAX", modelsPax),
         PrinterBrand(12, "Silicon", modelsSilicon),
         PrinterBrand(13, "Star Micronics", modelsStar),
         PrinterBrand(14, "Sunmi", modelsSunmi),
+        PrinterBrand(23, "TELPO", modelTelpo),
         PrinterBrand(15, "Unicorn", modelsUnicorn),
         PrinterBrand(16, "VSC", modelsVsc),
-        PrinterBrand(17, "Windows Print Spooler", modelsWindowsPrintSpooler),
-        PrinterBrand(18, "WINTEC", modelsWintec),
+//        PrinterBrand(18, "WINTEC", modelsWintec),
+//        PrinterBrand(17, "Windows Print Spooler", modelsWindowsPrintSpooler),
         PrinterBrand(19, "Xcheng Mobile POS", modelsXcMobilePos),
         PrinterBrand(20, "ZJiang", modelsZJiang),
         PrinterBrand(21, "ZoneRich", modelsZoneRich),
-        PrinterBrand(22, "PAX", modelsPax),
-        PrinterBrand(23, "TELPO", modelTelpo),
-        PrinterBrand(24, "COMSON", modelComson),
     )
 }

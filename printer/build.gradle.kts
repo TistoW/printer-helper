@@ -31,6 +31,9 @@ android {
 
     // PackagingOptions (Kotlin DSL)
     packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
         resources {
             excludes += setOf("lib/arm64/libepos2.so")
         }
@@ -44,6 +47,14 @@ android {
         }
     }
 
+    afterEvaluate {
+        tasks.withType<Copy>().configureEach {
+            from(zipTree(configurations.api.get().singleFile)) {
+                include("**/*.so")
+                into("src/main/jniLibs")
+            }
+        }
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

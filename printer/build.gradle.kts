@@ -72,7 +72,7 @@ dependencies {
     kapt(libs.compiler)
 
     //noinspection UseTomlInstead
-    implementation("net.java.dev.jna:jna:5.18.1@aar")
+    api("net.java.dev.jna:jna:5.18.1@aar")
 
     implementation(libs.zxing.android.embedded)
     implementation(libs.qrgenerator)
